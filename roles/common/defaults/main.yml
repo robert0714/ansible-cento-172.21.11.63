@@ -1,0 +1,31 @@
+hosts: [
+  { host_ip: "172.21.11.31", host_name: "prod011031"},
+  { host_ip: "172.21.11.32", host_name: "prod011032"},
+  { host_ip: "172.21.11.33", host_name: "prod011033"},
+  { host_ip: "172.21.11.34", host_name: "prod011034"},
+  { host_ip: "172.21.11.41", host_name: "prod011041"},
+  { host_ip: "172.21.11.42", host_name: "prod011042"},
+  { host_ip: "172.21.11.46", host_name: "prod011046"},
+  { host_ip: "172.21.11.47", host_name: "prod011047"},
+  { host_ip: "172.21.11.48", host_name: "prod011048"},
+  { host_ip: "172.21.11.49", host_name: "prod011049"},
+  { host_ip: "172.21.11.61", host_name: "prod011061"},
+  { host_ip: "172.21.11.62", host_name: "prod011062"}, 
+  { host_ip: "172.21.11.63", host_name: "prod011063"},
+  { host_ip: "172.21.12.131", host_name: "prod012131"},
+  { host_ip: "172.21.12.132", host_name: "prod012132"},
+  { host_ip: "172.21.12.133", host_name: "prod012133"},
+  { host_ip: "172.21.12.134", host_name: "prod012134"},
+  { host_ip: "172.21.12.135", host_name: "prod012135"},
+  { host_ip: "172.21.12.136", host_name: "prod012136"} 
+  ]
+
+obsolete_services:
+  - puppet
+  - chef-client
+
+centos_files: [
+       { src: "CentOS-Base.repo", dest: "/etc/yum.repos.d/CentOS-Base.repo" },
+       { src: "epel.repo", dest: "/etc/yum.repos.d/epel.repo" }
+  ]
+
