@@ -1,16 +1,37 @@
+- name: copy epel-release-7-11.noarch.rpm
+  copy:
+    src: epel-release-7-11.noarch.rpm
+    dest : /tmp/epel-release-7-11.noarch.rpm
+
 - name:  install epel
   yum:
-    name: http://mirror01.idc.hinet.net/EPEL/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
+    name: /tmp/epel-release-7-11.noarch.rpm
     state: present
   ignore_errors: yes
   tags:  [common]
 
-#- name:  Extra Packages for Enterprise Linux (or EPEL) is present
-#  yum: 
-#     name: epel-release 
-#     state: latest  
-#  ignore_errors: yes
-#  tags: [common]
+- name: clean 1
+  shell: rm -f /var/lib/rpm/__db*
+  ignore_errors: yes
+  tags:  [common]
+
+- name: clean 2
+  shell: rpm  --rebuilddb
+  ignore_errors: yes
+  tags:  [common]
+
+
+- name: clean 3
+  shell: yum clean all
+  ignore_errors: yes
+  tags:  [common]
+
+- name: clean 4
+  shell: yum update
+  ignore_errors: yes
+  tags:  [common]
+
+
 
 - name: CentOS files are copied
   copy:
@@ -69,6 +90,12 @@
   yum: 
     name: jq 
     state: present  
+  tags: [common]
+
+- name: htop is present
+  yum:
+    name: htop
+    state: present
   tags: [common]
   
 - name: KILLALL is present

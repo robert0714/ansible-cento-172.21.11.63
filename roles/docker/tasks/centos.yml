@@ -1,7 +1,36 @@
+- name: mkdir /data/slave
+  file:
+    path: /mnt/sdb/docker_persistent
+    owner: iisi.cm01
+    group: iisi.cm01
+    state: directory
+    mode: 0755
+
+- name: soft link 
+  shell: ln -s /mnt/sdb/docker_persistent    /var/lib/docker
+  ignore_errors: yes
+  tags: [docker]
+
+
+- name: recursive change mode
+  shell: chmod -R 0755 /data
+  ignore_errors: yes
+  tags: [docker]
+
+
 - name: CentOS dirctory are copied
   file: path=/etc/docker state=directory mode=0755
   ignore_errors: yes
   tags: [docker]
+
+
+#- name: Uninstall old version
+#  yum: name={{ item }} state=absent
+#  with_items:
+#    - docker
+#    - docker-selinux
+#    - docker-engine
+#  tags: [docker]
 
 - name: CentOS files are copied
   copy:
@@ -13,10 +42,21 @@
 - name: Install Docker required packages
   yum: name={{ item }} state=present
   with_items:
+    - policycoreutils-python
     - yum-utils
     - device-mapper-persistent-data
     - lvm2
   tags: [docker]  
+
+- name: copy container-selinux-2.33-1.git86f33cd.el7.noarch.rpm
+  copy:
+    src: container-selinux-2.33-1.git86f33cd.el7.noarch.rpm
+    dest: /tmp/container-selinux-2.33-1.git86f33cd.el7.noarch.rpm
+
+- name: install
+  shell: rpm -ivh /tmp/container-selinux-2.33-1.git86f33cd.el7.noarch.rpm
+  ignore_errors: yes
+
 
 - name: add docker ce repo
   shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
@@ -76,7 +116,7 @@
 - name: vagrant user is added to the docker group
   user:
     name: "{{ item }}"
-    group: docker
+    groups: docker
     append: yes
   with_items: 
     - iisi.cm01
